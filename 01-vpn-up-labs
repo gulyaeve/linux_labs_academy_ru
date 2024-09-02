@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+# NetworkManager vpn-up script to connect labs.academy.ru
+# Author: Eugene Gulyaev <gulyaeve@icloud.com>
+#
+# Do not launch this script manually
+# 
+
+if [ "$CONNECTION_ID" != "labs.academy.ru" ]; then
+	exit 0
+fi
+
+case "$2" in
+	vpn-up)
+		curl -s http://10.26.81.1/labs/access.txt -o - \
+			| grep "^ADD " \
+			|  while read x address x mask x; do 
+				ip route add $address/$mask dev  $VPN_IP_IFACE
+			done
+	;;
+
+	# vpn-down)
+	# ;;
+esac
